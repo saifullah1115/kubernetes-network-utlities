@@ -1,0 +1,149 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: wso2-mi-log-archiver
+  name: wso2-mi-log-archiver-deployment
+  namespace: wso2
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: wso2-mi-log-archiver
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: wso2-mi-log-archiver
+    spec:
+      containers:
+      - command:
+        - /bin/sh
+        image: busybox
+        imagePullPolicy: IfNotPresent
+        name: wso2-mi-log-archiver
+        resources:
+          limits:
+            cpu: "3"
+            memory: 6Gi
+          requests:
+            cpu: "2"
+            memory: 4Gi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        tty: true
+        volumeMounts:
+        - mountPath: /wso2-ecare-kyc/
+          name: wso2-ecare-kyc
+        - mountPath: /wso2-ecare-balance/
+          name: wso2-ecare-balance
+        - mountPath: /wso2-ecare-clientele/
+          name: wso2-ecare-clientele
+        - mountPath: /wso2-ecare-offersubscription/
+          name: wso2-ecare-offersubscription
+        - mountPath: /wso2-golootlo-allservice/
+          name: wso2-golootlo-allservice
+        - mountPath: /scripts/
+          name: scripts-vol
+        - mountPath: /etc/localtime
+          name: tz-config
+        - mountPath: /wso2-ecare-userbilling/
+          name: wso2-ecare-userbilling
+        - mountPath: /wso2-ecare-taxcertificate/
+          name: wso2-ecare-taxcertificate
+        - mountPath: /wso2-ecare-cdr/
+          name: wso2-ecare-cdr
+        - mountPath: /wso2-ecare-rechargehistory/
+          name: wso2-ecare-rechargehistory
+        - mountPath: /wso2-ecare-packageplan/
+          name: wso2-ecare-packageplan
+        - mountPath: /wso2-ecare-subscribertype/
+          name: wso2-ecare-subscribertype
+        - mountPath: /wso2-ecare-billdetails/
+          name: wso2-ecare-billdetails
+        - mountPath: /wso2-ecare-rbtstatus/
+          name: wso2-ecare-rbtstatus
+        - mountPath: /wso2-ecare-rbtsubunsub/
+          name: wso2-ecare-rbtsubunsub
+        - mountPath: /wso2-ecare-scratchtopup/
+          name: wso2-ecare-scratchtopup
+        - mountPath: /wso2-ecare-offerhistory/
+          name: wso2-ecare-offerhistory
+        - mountPath: /wso2-ecare-cms/
+          name: wso2-ecare-cms
+        - mountPath: /wso2-ecare-balanceshare/
+          name: wso2-ecare-balanceshare
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - hostPath:
+          path: /usr/share/zoneinfo/Asia/Karachi
+          type: File
+        name: tz-config
+      - name: wso2-ecare-kyc
+        persistentVolumeClaim:
+          claimName: wso2-ecare-kyc-pvc-mi
+      - name: wso2-ecare-clientele
+        persistentVolumeClaim:
+          claimName: wso2-ecare-clientele-pvc-mi
+      - name: wso2-ecare-balance
+        persistentVolumeClaim:
+          claimName: wso2-ecare-balance-pvc-mi
+      - name: wso2-ecare-offersubscription
+        persistentVolumeClaim:
+          claimName: wso2-ecare-offersubscription-pvc-mi
+      - name: wso2-golootlo-allservice
+        persistentVolumeClaim:
+          claimName: wso2-golootlo-allservice-pvc-mi
+      - name: scripts-vol
+        persistentVolumeClaim:
+          claimName: wso2-scripts-pvc
+      - name: wso2-ecare-userbilling
+        persistentVolumeClaim:
+          claimName: wso2-ecare-userbilling-pvc-mi
+      - name: wso2-ecare-taxcertificate
+        persistentVolumeClaim:
+          claimName: wso2-ecare-taxcertificate-pvc-mi
+      - name: wso2-ecare-cdr
+        persistentVolumeClaim:
+          claimName: wso2-ecare-cdr-pvc-mi
+      - name: wso2-ecare-rechargehistory
+        persistentVolumeClaim:
+          claimName: wso2-ecare-rechargehistory-pvc-mi
+      - name: wso2-ecare-packageplan
+        persistentVolumeClaim:
+          claimName: wso2-ecare-packageplan-pvc-mi
+      - name: wso2-ecare-subscribertype
+        persistentVolumeClaim:
+          claimName: wso2-ecare-subscribertype-pvc-mi
+      - name: wso2-ecare-billdetails
+        persistentVolumeClaim:
+          claimName: wso2-ecare-billdetails-pvc-mi
+      - name: wso2-ecare-rbtstatus
+        persistentVolumeClaim:
+          claimName: wso2-ecare-rbtstatus-pvc-mi
+      - name: wso2-ecare-rbtsubunsub
+        persistentVolumeClaim:
+          claimName: wso2-ecare-rbtsubunsub-pvc-mi
+      - name: wso2-ecare-scratchtopup
+        persistentVolumeClaim:
+          claimName: wso2-ecare-scratchtopup-pvc-mi
+      - name: wso2-ecare-offerhistory
+        persistentVolumeClaim:
+          claimName: wso2-ecare-offerhistory-pvc-mi
+      - name: wso2-ecare-cms
+        persistentVolumeClaim:
+          claimName: wso2-ecare-cms-pvc-mi
+      - name: wso2-ecare-balanceshare
+        persistentVolumeClaim:
+          claimName: wso2-ecare-balanceshare-pvc-mi
